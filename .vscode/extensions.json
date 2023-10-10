@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "jmrog.vscode-nuget-package-manager",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-dotnettools.csharp"
+    ]
+}
