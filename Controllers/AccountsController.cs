@@ -29,7 +29,7 @@ public class AccountsController : ControllerBase
             return BadRequest(createAccount);
 
         var newAccount = _services.Create(createAccount);
-        Log.Information("Request for account detail made");
+        Log.Information("User creating new account details");
 
         return Ok(newAccount);
     }

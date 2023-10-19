@@ -23,7 +23,7 @@ public class RegisterNewAccountModel
 
     //Added regular expression to the pin property
     [Required]
-    [RegularExpression(@"^[0-9]\{4}$", ErrorMessage = "Pin must not be more than 4 digits")]  //This makes it a 4 digit string pin
+    //[RegularExpression(@"^[0-9]\{4}$", ErrorMessage = "Pin must not be more than 4 digits")]  //This makes it a 4 digit string pin
     public string Pin { get; set; }
     
     [Required]

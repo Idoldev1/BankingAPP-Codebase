@@ -11,8 +11,8 @@ using UserServices_BankAPI;
 namespace UserServices_BankAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230802135636_Initial")]
-    partial class Initial
+    [Migration("20231013151125_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

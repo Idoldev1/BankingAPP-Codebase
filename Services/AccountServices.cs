@@ -24,23 +24,21 @@ public class AccountServices
 
     
     
-    public Account Create(RegisterNewAccountModel newAccount)
+    public GetAccountModel Create([FromBody]RegisterNewAccountModel newAccount)
     {
-        var account = _mapper.Map<Account>(newAccount);
+        var createAccount = _accountRepository.Create(account, newAccount.Pin, newAccount.ConfirmPin);
+        var account = _mapper.Map<GetAccountModel>(newAccount);
         
-        _accountRepository.Create(account, newAccount.Pin, newAccount.ConfirmPin);
-
-        _mapper.Map<GetAccountModel>(account);
 
         return account;
     }
 
-    public Account GetAllAccount()
+    public IEnumerable<GetAccountModel> GetAllAccount()
     {
         var accounts = _accountRepository.GetAllAcount();
-        var cleanedAccounts = _mapper.Map<IList<GetAccountModel>>(accounts);
+        var cleanedAccounts = _mapper.Map<List<GetAccountModel>>(accounts);
 
-        return (Account)cleanedAccounts;
+        return cleanedAccounts;
     }
 
 
