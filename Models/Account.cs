@@ -46,6 +46,5 @@ public enum AccountType
 {
     Savings,
     Current,
-    Corperate,
-    Government
+    Corperate
 }

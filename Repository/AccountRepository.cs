@@ -1,5 +1,9 @@
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using UserServices_BankAPI.Dtos;
 using UserServices_BankAPI.Models;
+using UserServices_BankAPI.Models.Users;
 
 namespace UserServices_BankAPI.Repository;
 
@@ -7,10 +11,14 @@ namespace UserServices_BankAPI.Repository;
 public class AccountRepository : IAccountRepository
 {
     private readonly AppDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AccountRepository(AppDbContext context)
+    public AccountRepository(AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
         _context = context;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public Account Authenticate(string AccountNumber, string Pin)
@@ -25,6 +33,7 @@ public class AccountRepository : IAccountRepository
 
         return account;
     }
+
 
 
     private static bool VerifyPinHash(string Pin, byte[] pinHash, byte[] pinSalt)
@@ -42,7 +51,9 @@ public class AccountRepository : IAccountRepository
         return true;
     }
 
-    public Account Create(Account account, string Pin, string ConfirmPin)
+
+
+    public async Task<Account> Create(Account account, string Pin, string ConfirmPin)
     {
         //This is to crete a new account
         if (_context.Accounts.Any(c => c.Email == account.Email)) 
@@ -61,11 +72,13 @@ public class AccountRepository : IAccountRepository
 
         //Let's add new account to db
         _context.Accounts.Add(account);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return account;
-
     }
+
+
+
 
     private static void CreatePinHash(string pin, out byte[] pinHash, out byte[] pinSalt)
     {
@@ -84,10 +97,14 @@ public class AccountRepository : IAccountRepository
         }
     }
 
-    public IEnumerable<Account> GetAllAcount()
+    /*public IEnumerable<Account> GetAllAcount()
     {
         return _context.Accounts.ToList();
-    }
+    }*/
+
+
+
+
 
     public Account GetByAccountNumber(string AccountNumber)
     {
@@ -97,6 +114,8 @@ public class AccountRepository : IAccountRepository
         return account;
     }
 
+
+
     public Account GetById(int Id)
     {
         var account = _context.Accounts.Find(Id);
@@ -104,6 +123,9 @@ public class AccountRepository : IAccountRepository
 
         return account;
     }
+
+
+    
 
     public void Update(Account account, string Pin = null)
     {
@@ -143,5 +165,44 @@ public class AccountRepository : IAccountRepository
 
         _context.Update(accountUpdate);
         _context.SaveChanges();
+    }
+
+
+
+    public void UpdateAccountBalance(BalanceUpdate balanceUpdate)
+    {
+        // Implement the logic to update the account balance in the "Accounts" database.
+        // This will depend on your database and ORM (e.g., Entity Framework).
+        // Ensure proper error handling and database transaction if needed.
+
+        var account = _context.Accounts.FirstOrDefault(a => a.AccountNumberGenerated == balanceUpdate.AccountNumber);
+
+        if (account == null)
+        {
+            throw new InvalidOperationException("Account not found.");
+        }
+
+        // Update the balance.
+        account.CurrentAccountBalance += balanceUpdate.Amount;
+
+        _context.SaveChanges();
+    }
+
+
+
+    public async Task<ApplicationUser> FindByEmailAsync(string email)
+    {
+        return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+    }
+
+
+
+    public async Task CreateUserAsync(ApplicationUser user)
+    {
+        var result = await _userManager.CreateAsync(user);
+        if (!result.Succeeded)
+        {
+            throw new Exception("Something went wrong, please try again soon");
+        }
     }
 }

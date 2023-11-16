@@ -1,6 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using UserServices_BankAPI;
+using UserServices_BankAPI.Models.Users;
+using UserServices_BankAPI.OptionsSetup;
 using UserServices_BankAPI.Repository;
 using UserServices_BankAPI.Services;
 
@@ -15,6 +20,15 @@ Log.Logger = new LoggerConfiguration().
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddIdentity<ApplicationUser, AppRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+
+
+builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, AppRole, AppDbContext, int>>();
+builder.Services.AddScoped<UserManager<ApplicationUser>>();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<AccountServices>();
 builder.Services.AddEndpointsApiExplorer();
@@ -23,7 +37,7 @@ builder.Services.AddSwaggerGen(x =>
     x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "User Services for BankAPI",
-        Version = "v2",
+        Version = "v1",
         Description = "Next generation banking services right here",
         Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
@@ -38,7 +52,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-var app = builder.Build();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
+
+builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -49,6 +70,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSwagger();

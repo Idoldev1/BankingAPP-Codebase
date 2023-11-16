@@ -15,7 +15,7 @@ public class GetAccountModel
     public string Email { get; set; }
     public decimal CurrentAccountBalance { get; set; }
     public AccountType AccountType { get; set; } //This is an enum to show the differnt account types available
-
+    public string AccountNumberGenerated { get; set; }
     public DateTime DateCreatred { get; set; }
     public DateTime DateLastUpdated { get; set; }
 }
