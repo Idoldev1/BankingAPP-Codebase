@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using UserServices_BankAPI.Dtos;
 using UserServices_BankAPI.Models;
+using UserServices_BankAPI.Models.Users;
 using UserServices_BankAPI.Services;
 
 namespace UserServices_BankAPI.Controllers;
@@ -41,11 +42,11 @@ public class AccountsController : ControllerBase
     public IActionResult Login ([FromBody] Login login)
     {
         if (!ModelState.IsValid)
-            return BadRequest(login)
+            return BadRequest(login);
 
         var signIn = _services.LoginAsync(login);
 
-        return Ok(login);
+        return Ok(signIn);
     }
 
 

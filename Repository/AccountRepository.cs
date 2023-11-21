@@ -87,6 +87,8 @@ public class AccountRepository : IAccountRepository
         pinHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(pin));
     }
 
+
+
     public void Delete(int Id)
     {
         var account = _context.Accounts.Find(Id);
@@ -96,11 +98,6 @@ public class AccountRepository : IAccountRepository
             _context.SaveChanges();
         }
     }
-
-    /*public IEnumerable<Account> GetAllAcount()
-    {
-        return _context.Accounts.ToList();
-    }*/
 
 
 
@@ -152,7 +149,7 @@ public class AccountRepository : IAccountRepository
 
         if(!string.IsNullOrWhiteSpace(Pin))
         {
-            //Checks if the email is already in use
+            //Checks if the pin is invalid or has unaccepted format
 
             byte[] pinHash, pinSalt;
             CreatePinHash(Pin, out pinHash, out pinSalt);
@@ -166,6 +163,7 @@ public class AccountRepository : IAccountRepository
         _context.Update(accountUpdate);
         _context.SaveChanges();
     }
+
 
 
 

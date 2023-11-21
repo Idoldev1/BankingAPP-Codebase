@@ -15,7 +15,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<Account> Accounts { get; set; }
-    //public override DbSet<ApplicationUser> Users { get; set;}
+    public override DbSet<ApplicationUser> Users { get; set;}
 
 
     /*protected override void OnModelCreating(ModelBuilder modelBuilder)
