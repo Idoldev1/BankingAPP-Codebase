@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using UserServices_BankAPI;
 using UserServices_BankAPI.Models.Users;
@@ -20,13 +21,13 @@ Log.Logger = new LoggerConfiguration().
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddIdentity<ApplicationUser, AppRole>()
+builder.Services.AddIdentityCore<ApplicationUser>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
 
 
-builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, AppRole, AppDbContext, int>>();
+//builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, AppRole, AppDbContext, int>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -48,9 +49,9 @@ builder.Services.AddSwaggerGen(x =>
     });
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();

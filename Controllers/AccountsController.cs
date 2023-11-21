@@ -36,6 +36,19 @@ public class AccountsController : ControllerBase
     }
 
 
+    [HttpPost]
+    [Route("login")]
+    public IActionResult Login ([FromBody] Login login)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(login)
+
+        var signIn = _services.LoginAsync(login);
+
+        return Ok(login);
+    }
+
+
     /*[HttpGet]
     [Route("get-all-accounts")]
     public IActionResult GetAllAccount()

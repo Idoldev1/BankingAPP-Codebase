@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 namespace UserServices_BankAPI.Models.Users;
 
 
-public class ApplicationUser : IdentityUser<int>
+public class ApplicationUser : IdentityUser
 {
     //[Required]
     //public string UserName { get; set; }

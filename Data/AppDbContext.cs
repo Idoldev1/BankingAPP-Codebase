@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using UserServices_BankAPI.Models;
@@ -6,7 +7,7 @@ using UserServices_BankAPI.Models.Users;
 namespace UserServices_BankAPI;
 
 
-public class AppDbContext : IdentityDbContext<ApplicationUser, AppRole, int>
+public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -14,5 +15,11 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, AppRole, int>
     }
 
     public DbSet<Account> Accounts { get; set; }
-    public DbSet<ApplicationUser> Users { get; set;}
+    //public override DbSet<ApplicationUser> Users { get; set;}
+
+
+    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }*/
 }
