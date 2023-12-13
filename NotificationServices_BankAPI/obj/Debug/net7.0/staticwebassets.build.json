@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "uYizgVwg6prViA0gIhYMOhq2m1mQZOczqT3l1gUM4U4=",
+  "Source": "NotificationServices_BankAPI",
+  "BasePath": "_content/NotificationServices_BankAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

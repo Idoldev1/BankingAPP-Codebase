@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\NotificationServices_BankAPI.props" />
+</Project>

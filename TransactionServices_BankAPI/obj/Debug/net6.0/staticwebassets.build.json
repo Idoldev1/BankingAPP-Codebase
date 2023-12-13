@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "L+jLl+xgDMmQVO/hJe+hJ3iflRNwaZOBe6ouvQrj1Us=",
+  "Source": "TransactionServices_BankAPI",
+  "BasePath": "_content/TransactionServices_BankAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
