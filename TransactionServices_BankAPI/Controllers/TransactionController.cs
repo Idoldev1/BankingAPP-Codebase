@@ -42,6 +42,7 @@ public class TransactionController : ControllerBase
     public async Task<IActionResult> MakeDeposit(DepositRequest deposit)
     {
         var transaction = await _service.MakeNewDepositAsync(deposit);
+        Log.Information($"Deposit action successful for user with details {transaction}");
         return Ok(transaction);
     }
 
@@ -51,7 +52,7 @@ public class TransactionController : ControllerBase
     public async Task<IActionResult> Withdrawal(WithdrawalRequest withdrawal)
     {
         var newWithdrawal = await _service.MakeWithdrawalAsync(withdrawal);
-
+        Log.Information($"Withdrawal successful for user with details {newWithdrawal}");
         return Ok(newWithdrawal);
     }
 
@@ -61,6 +62,7 @@ public class TransactionController : ControllerBase
     public IActionResult FindTransactionByDate(DateTime dateTime)
     {
         var request = _service.GetTransactionByDate(dateTime);
+        Log.Information($"Transaction Details requested for {dateTime} with details {request}");
 
         return Ok(request);
     }
